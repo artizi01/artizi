@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SimpleSmartContract {
+    address public owner;
+    uint public contractBalance;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function deposit() public payable {
+        contractBalance += msg.value;
+    }
+
+    function withdraw(uint amount) public {
+        require(msg.sender == owner, "Only the contract owner can withdraw funds");
+        require(amount <= contractBalance, "Insufficient funds");
+        
+        payable(owner).transfer(amount);
+        contractBalance -= amount;
+    }
+}
